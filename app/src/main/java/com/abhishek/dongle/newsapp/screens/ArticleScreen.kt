@@ -11,9 +11,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -32,11 +34,13 @@ import com.abhishek.dongle.newsapp.article.Article
 import com.abhishek.dongle.newsapp.article.ArticlesViewModel
 
 @Composable
-fun ArticlesScreen(articleViewModel: ArticlesViewModel) {
+fun ArticlesScreen(
+    articleViewModel: ArticlesViewModel,
+    onSettingsClicked: () -> Unit) {
     val articleState = articleViewModel.articleState.collectAsState()
 
     Column {
-        AppBar()
+        AppBar(onSettingsClicked)
         if (articleState.value.loading)
             Loader()
         if (articleState.value.error != null)
@@ -48,15 +52,23 @@ fun ArticlesScreen(articleViewModel: ArticlesViewModel) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun AppBar() {
+private fun AppBar(onSettingsClicked: () -> Unit) {
     var expanded by remember { mutableStateOf(false) }
     TopAppBar(
         title = { Text(text = "Articles") },
+        navigationIcon = {
+            IconButton(onClick = {}) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
+                    contentDescription = "Back Button"
+                )
+            }
+        },
         actions = {
             IconButton(onClick = { expanded = true}) {
                 Icon(
                     imageVector = Icons.Outlined.MoreVert,
-                    contentDescription = "Setting Button"
+                    contentDescription = "Settings Button"
                 )
             }
 
@@ -64,8 +76,14 @@ private fun AppBar() {
                 expanded = expanded,
                 onDismissRequest = { expanded = false }
             ) {
-                Text(text = "Setting", modifier = Modifier.padding(4.dp))
-                Text(text = "Logout", modifier = Modifier.padding(4.dp))
+                DropdownMenuItem(
+                    text = { Text(text = "Settings") },
+                    onClick = { onSettingsClicked() }
+                )
+                DropdownMenuItem(
+                    text = { Text(text = "Logout") },
+                    onClick = {}
+                )
             }
         }
     )

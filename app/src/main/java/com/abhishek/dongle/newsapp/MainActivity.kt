@@ -26,7 +26,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    ArticlesScreen(articleViewModel = articlesViewModel)
+                    ArticlesScreen(
+                        articleViewModel = articlesViewModel,
+                        onSettingsClicked = {})
                 }
             }
         }
