@@ -1,6 +1,5 @@
 package com.abhishek.dongle.newsapp.article
 
-import android.util.Log
 import com.abhishek.dongle.newsapp.base.BaseViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
@@ -17,22 +16,20 @@ class ArticlesViewModel : BaseViewModel() {
     private val _articleState = MutableStateFlow(ArticlesState(loading = true))
     val articleState: StateFlow<ArticlesState> get() = _articleState
 
-    private var httpClient: HttpClient
-    private var articlesService: ArticlesService
+    private var articlesUseCase: ArticlesUseCase
 
     init {
-        httpClient = getHttpClient()
-        articlesService = ArticlesService(httpClient)
+        val httpClient = getHttpClient()
+        val articlesService = ArticlesService(httpClient)
+        articlesUseCase = ArticlesUseCase(articlesService)
         getArticles()
     }
 
     private fun getArticles() {
         scope.launch {
-            val fetchedArticles = articlesService.fetchArticles()
+            val fetchedArticles = articlesUseCase.getArticles()
             delay(1000)
-            _articleState.emit(ArticlesState(error = "Something went wrong."))
-            Log.d("test: ", "list = ${fetchedArticles.size}")
-//            _articleState.emit(ArticlesState(articles = fetchedArticles))
+            _articleState.emit(ArticlesState(articles = fetchedArticles))
         }
     }
 
