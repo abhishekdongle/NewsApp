@@ -9,13 +9,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.abhishek.dongle.newsapp.article.ArticlesViewModel
 import com.abhishek.dongle.newsapp.screens.ArticlesScreen
 import com.abhishek.dongle.newsapp.screens.Screens
 import com.abhishek.dongle.newsapp.screens.SettingsScreen
 
 @Composable
-fun AppScaffold(articlesViewModel: ArticlesViewModel) {
+fun AppScaffold() {
     val navController = rememberNavController()
 
     Scaffold {
@@ -24,7 +23,6 @@ fun AppScaffold(articlesViewModel: ArticlesViewModel) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it),
-            articleViewModel = articlesViewModel
         )
     }
 }
@@ -33,7 +31,6 @@ fun AppScaffold(articlesViewModel: ArticlesViewModel) {
 fun AppNavHost(
     navController: NavHostController,
     modifier: Modifier,
-    articleViewModel: ArticlesViewModel
 ) {
     NavHost(
         navController = navController,
@@ -42,8 +39,8 @@ fun AppNavHost(
     ) {
         composable(Screens.ARTICLES.route) {
             ArticlesScreen(
-                articleViewModel = articleViewModel,
-                onSettingsClicked = { navController.navigate(Screens.SETTINGS.route) })
+                onSettingsClicked = { navController.navigate(Screens.SETTINGS.route) }
+            )
         }
         composable(Screens.SETTINGS.route) {
             SettingsScreen()
