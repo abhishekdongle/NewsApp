@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.app.cash.sqldelight)
 }
 
 android {
@@ -40,6 +41,14 @@ android {
     }
 }
 
+sqldelight {
+    databases {
+        create("NewsAppDatabase") {
+            packageName.set("com.abhishek.dongle.newsapp.db")
+        }
+    }
+}
+
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -63,6 +72,8 @@ dependencies {
     implementation(libs.koin.core)
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
+    implementation(libs.sqldelight.android.driver)
+    implementation(libs.sqldelight.coroutines.extensions)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
