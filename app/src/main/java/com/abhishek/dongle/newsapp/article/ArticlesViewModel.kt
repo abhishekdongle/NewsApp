@@ -1,7 +1,6 @@
 package com.abhishek.dongle.newsapp.article
 
 import com.abhishek.dongle.newsapp.base.BaseViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -17,11 +16,11 @@ class ArticlesViewModel(
         getArticles()
     }
 
-    private fun getArticles() {
+    fun getArticles(forceRefresh: Boolean = false) {
         scope.launch {
-            val fetchedArticles = articlesUseCase.getArticles()
-            delay(1000)
-            _articleState.emit(ArticlesState(articles = fetchedArticles))
+            val fetchedArticles = articlesUseCase.getArticles(forceRefresh)
+
+            _articleState.emit(ArticlesState(loading = false, articles = fetchedArticles))
         }
     }
 }
