@@ -13,3 +13,13 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+#keystore
+*.jks
+*.keystore
+
+#crash-logs & profiling
+*.hprof
+
+#generated(dagger/hilt/kapt)
+build/generated
